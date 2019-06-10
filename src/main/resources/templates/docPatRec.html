@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>docPatRec Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: dnavbar(docPatRec, none)"></th:block>
+			<h1></h1>
+			<br></br>
+			<div th:if="${not #lists.isEmpty(allPatients)}">
+				<h2>Patients List</h2>
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>first name</th>
+						<th>last name</th>
+						<th>health security code</th>
+						<th>username</th>
+						<th>email</th>
+						<th>status</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+
+					<tr th:each="user : ${allPatients}">
+						<td th:text="${user.Patient.firstName}"></td>
+						<td th:text="${user.Patient.lastName}"></td>
+						<td th:text="${user.Patient.hsCode}"></td>
+						<td th:text="${user.username}"></td>
+						<td th:text="${user.email}"></td>
+						<td th:text="${user.userStatus}"></td>
+						<td><a th:href="@{/doctor/dInfoPtn(id=${user.userId})}"
+							class="btn btn-info active btn-md" role="button">Info</a></td>
+						<td><a
+							th:href="@{/doctor/viewPrintRecords(id=${user.userId})}"
+							class="btn btn-success active btn-md" role="button">View/Print
+								Records</a></td>
+						<td><a
+							th:href="@{/doctor/createNewRecord(id=${user.userId})}"
+							class="btn btn-primary active btn-md" role="button">Create
+								New Record</a></td>
+					</tr>
+				</table>
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

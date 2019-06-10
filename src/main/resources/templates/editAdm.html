@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>editAdmin Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(usersAdm,drop1)"></th:block>
+			<h1></h1>
+
+			<br></br>
+			<div id="adminForm">
+				<h3
+					style="background-color: #4373a7; color: white; margin-top: 0px;">Edit
+					Admin Form</h3>
+				<br></br>
+				<form class="form-horizontal" th:action="@{/admin/editAdm}"
+					th:object="${userEdto}" method="POST" enctype="utf8">
+
+					<input type="hidden" name="id" th:value="${userEdto.id}" />
+
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('username')} ? has-error : ''">
+						<label class="col-md-2 control-label">Username:</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" th:field="*{username}"
+								th:value="${userEdto.username}" readonly="readonly" /> <span
+								th:if="${#fields.hasErrors('username')}" class="help-block"
+								th:errors="*{username}"></span>
+						</div>
+					</div>
+
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('email')} ? has-error : ''">
+						<label class="col-md-2 control-label">Email:</label>
+						<div class="col-md-8">
+							<input type="email" class="form-control" th:field="*{email}"
+								th:value="${userEdto.email}"
+								placeholder="For example: joe@xyz.com" /> <span
+								th:if="${#fields.hasErrors('email')}" class="help-block"
+								th:errors="*{email}"></span>
+						</div>
+					</div>
+
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('address')} ? has-error : ''">
+						<label class="col-md-2 control-label">Address:</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" th:field="*{address}"
+								th:value="${userEdto.address}"
+								placeholder="Must have at least 2 characters" /> <span
+								th:if="${#fields.hasErrors('address')}" class="help-block"
+								th:errors="*{address}"></span>
+						</div>
+					</div>
+
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('telephone')} ? has-error : ''">
+						<label class="col-md-2 control-label">Telephone:</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" th:field="*{telephone}"
+								th:value="${userEdto.telephone}"
+								placeholder="Must have at least 6 numbers" /> <span
+								th:if="${#fields.hasErrors('telephone')}" class="help-block"
+								th:errors="*{telephone}"></span>
+						</div>
+					</div>
+
+					<div class="form-group"
+						th:classappend="${#fields.hasErrors('userStatus')} ? has-error : ''">
+						<label class="col-md-2 control-label">User Status:</label>
+						<div class="col-md-8">
+							<select class="form-control" th:field="*{userStatus}"
+								th:value="${userEdto.userStatus}">
+								<option value="">-SELECT A STATUS-</option>
+								<option value="ACTIVE">ACTIVE</option>
+								<option value="INACTIVE">INACTIVE</option>
+							</select> <span th:if="${#fields.hasErrors('userStatus')}"
+								class="help-block" th:errors="*{userStatus}"></span>
+						</div>
+					</div>
+
+					<input type="hidden" th:name="${_csrf.parameterName}"
+						th:value="${_csrf.token}" />
+
+					<div class="form-actions">
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</form>
+
+				<h3 style="margin: 50px 0px;" class="text-success bg-success"
+					th:text="${formMessageScc}">form success</h3>
+				<h3 style="margin: 50px 0px;" class="text-danger bg-danger"
+					th:text="${formMessageErr}">form</h3>
+			</div>
+
+			<div class="centrlink">
+				<a th:href="@{/admin/usersAdm}">Back to Users - Admin</a>
+			</div>
+
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>docInfoPat Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: dnavbar(docPatRec, none)"></th:block>
+			<br></br>
+			<div class="ttl-l">
+				<h1 class="alert alert-info">Patient User Info</h1>
+				<br></br>
+				<table class="tbla table table-bordered table-hover">
+					<tr>
+						<td><p>User Id:</p></td>
+						<td th:text="${user.userId}"></td>
+					</tr>
+					<tr>
+						<td><p>Username:</p></td>
+						<td th:text="${user.username}"></td>
+					</tr>
+					<tr>
+						<td><p>Email:</p></td>
+						<td th:text="${user.email}"></td>
+					</tr>
+					<tr>
+						<td><p>Address:</p></td>
+						<td th:text="${user.address}"></td>
+					</tr>
+					<tr>
+						<td><p>Telephone:</p></td>
+						<td th:text="${user.telephone}"></td>
+					</tr>
+					<tr>
+						<td><p>STATUS:</p></td>
+						<td th:text="${user.userStatus}"></td>
+					</tr>
+				</table>
+
+			</div>
+
+			<div class="ttl-r">
+				<h1 class="alert alert-info">Patient Personal Data</h1>
+				<br></br>
+				<table class="tbla table table-bordered table-hover">
+					<tr>
+						<td><p>Patient Id:</p></td>
+						<td th:text="${user.Patient.patientId}"></td>
+					</tr>
+					<tr>
+						<td><p>First name:</p></td>
+						<td th:text="${user.Patient.firstName}"></td>
+					</tr>
+					<tr>
+						<td><p>Last name:</p></td>
+						<td th:text="${user.Patient.lastName}"></td>
+					</tr>
+					<tr>
+						<td><p>Health Security Code:</p></td>
+						<td th:text="${user.Patient.hsCode}"></td>
+					</tr>
+					<tr>
+						<td><p>Gender:</p></td>
+						<td th:text="${user.Patient.gender}"></td>
+					</tr>
+					<tr>
+						<td><p>Birth date:</p></td>
+						<td th:text="${birthDate}"></td>
+					</tr>
+					<tr>
+						<td><p>Other:</p></td>
+						<td th:text="${user.Patient.other}"></td>
+					</tr>
+				</table>
+
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

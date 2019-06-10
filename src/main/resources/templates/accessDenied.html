@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>accessDenied Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: accDenavbar"></th:block>
+			<br></br>
+
+			<h1 class="text-danger bg-danger">You are not authorized to
+				access this page!</h1>
+			<br></br>
+
+			<h2 class="text-danger bg-danger">
+				Access attempted by: <span style="color:red" th:text="${user.username}"></span>
+			</h2>
+
+			<br></br>
+			<div class="centrlink">
+				<a th:href="@{/logout}">Logout</a>
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

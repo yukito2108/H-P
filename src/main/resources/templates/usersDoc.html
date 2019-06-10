@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>usersDoc Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(usersDoc,drop1)"></th:block>
+			<br></br>
+			<div class="addButt">
+				<a th:href="@{/admin/addDoc}" class="btn btn-success active btn-md"
+					role="button">Add new Doctor</a>
+			</div>
+
+			<div th:if="${not #lists.isEmpty(allDoctors)}">
+				<h2>Doctors List</h2>
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>username</th>
+						<th>email</th>
+						<th>status</th>
+						<th>first name</th>
+						<th>last name</th>
+						<th>qualifications</th>
+						<th>licence code</th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>
+
+					<tr th:each="user : ${allDoctors}">
+						<td th:text="${user.username}"></td>
+						<td th:text="${user.email}"></td>
+						<td th:text="${user.userStatus}"></td>
+						<td th:text="${user.Doctor.firstName}"></td>
+						<td th:text="${user.Doctor.lastName}"></td>
+						<td th:text="${user.Doctor.qualifications}"></td>
+						<td th:text="${user.Doctor.licenceCode}"></td>
+						<td><a th:href="@{/admin/infoDoc(id=${user.userId})}"
+							class="btn btn-info active btn-md" role="button">Info</a></td>
+						<td><a th:href="@{/admin/editDoc(id=${user.userId})}"
+							class="btn btn-warning active btn-md" role="button">Edit</a></td>
+						<td><a th:href="@{/admin/deleteDoc}"
+							class="btn btn-danger disabled btn-md" role="button">Delete</a></td>
+					</tr>
+				</table>
+			</div>
+
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

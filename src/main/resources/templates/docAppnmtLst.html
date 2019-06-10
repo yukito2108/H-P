@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>docAppnmtLst Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block
+				th:include="fragments/header :: dnavbar(docAppnmtLst, drop4)"></th:block>
+
+			<h1></h1>
+			<br></br>
+			<h2 class="alert alert-info" th:inline="text">
+				Appointment List for doctor: <span th:text="${doctorName}"></span>
+			</h2>
+			<h1></h1>
+			<div th:if="${not #lists.isEmpty(listaAppntm)}">
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>appDatetime</th>
+						<th>appointmentDetails</th>
+						<th>appointmentStatusCode</th>
+						<th>patient First name</th>
+						<th>patient Last name</th>
+						<th>patient hsCode</th>
+					</tr>
+
+					<tr th:each="appntm : ${listaAppntm}">
+						<td th:with ="date=${appntm.appDatetime}" th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).stringToStringD(date)}"></td>
+						<td th:text="${appntm.appointmentDetails}"></td>
+						<td th:text="${appntm.AppointmentStatusCode.appStatusCode}"></td>
+						<td th:text="${appntm.Patient.firstName}"></td>
+						<td th:text="${appntm.Patient.lastName}"></td>
+						<td th:text="${appntm.Patient.hsCode}"></td>
+					</tr>
+				</table>
+			</div>
+
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

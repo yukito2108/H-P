@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>patAppnmt Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: pnavbar(patAppnmt, none)"></th:block>
+
+			<div th:if="${not #lists.isEmpty(allDoctors)}">
+				<h2>Doctors List</h2>
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>first name</th>
+						<th>last name</th>
+						<th>qualifications</th>
+						<th>licence code</th>
+						<th></th>
+					</tr>
+
+					<tr th:each="user : ${allDoctors}">
+						<td th:text="${user.Doctor.firstName}"></td>
+						<td th:text="${user.Doctor.lastName}"></td>
+						<td th:text="${user.Doctor.qualifications}"></td>
+						<td th:text="${user.Doctor.licenceCode}"></td>
+						<td><a
+							th:href="@{/home/patSchdl(doctorId=${user.Doctor.doctorId})}"
+							class="btn btn-info active btn-md" role="button">Scheduler</a></td>
+					</tr>
+				</table>
+			</div>
+
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

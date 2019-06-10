@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>admAppnmt Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(admAppnmt, none)"></th:block>
+			<h1></h1>
+			<br></br>
+			<h2>Doctors List</h2>
+			<div th:if="${not #lists.isEmpty(allDoctors)}">
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>first name</th>
+						<th>last name</th>
+						<th>qualifications</th>
+						<th>licence code</th>
+						<th></th>
+						<th></th>
+					</tr>
+
+					<tr th:each="doc : ${allDoctors}">
+						<td th:text="${doc.firstName}"></td>
+						<td th:text="${doc.lastName}"></td>
+						<td th:text="${doc.qualifications}"></td>
+						<td th:text="${doc.licenceCode}"></td>
+						<td><a th:href="@{/admin/admSchdl(doctorId=${doc.doctorId})}"
+							class="btn btn-info active btn-md" role="button">Scheduler</a></td>
+						<td><a
+							th:href="@{/admin/admAppnmtLst(doctorId=${doc.doctorId})}"
+							class="btn btn-info active btn-md" role="button">Appntm List</a></td>
+					</tr>
+				</table>
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>admVP1 Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(admPatRec, none)"></th:block>
+
+			<div class="htmlreport">
+				<div class="headerpicture">
+					<img th:src="@{/images/medicalS.gif}" />
+					<p>Med.Ctr.-Spring</p>
+				</div>
+				<th:block th:include="fragments/pdfReport::pdfReport"></th:block>
+
+				<div id="bottom1">
+
+					<div class="form-actions">
+
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+							data-target="#myModal">Print to PDF</button>
+
+						<!-- Modal -->
+						<div id="myModal" class="modal fade" role="dialog"
+							aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+
+								<!-- Modal content-->
+								<div class="modal-content col-md-6">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title" id="myModalLabel">Do you want to
+											print to PDF this Medical Report?</h4>
+									</div>
+
+									<div class="modal-footer">
+										<a
+											th:href="@{/admin/admViewPrintOneRecordToPDF(id=${patientRecordId})}"
+											class="btn btn-success" role="button">Yes</a>
+										<button type="button" class="btn btn-danger"
+											data-dismiss="modal">No</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					<br></br>
+				</div>
+			</div>
+
+			<div id="bottom2">
+				<div id="bottom2">
+					<h3 style="margin: 50px 0px;" class="text-success bg-info"
+						th:text="${formMessage}">form</h3>
+				</div>
+			</div>
+
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

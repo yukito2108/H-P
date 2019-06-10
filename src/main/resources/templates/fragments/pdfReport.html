@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+	<div th:fragment="pdfReport">
+
+		<div class="htmlreportheader">
+			<h2>MEDICAL REPORT</h2>
+			<br></br>
+		</div>
+
+		<div class="rec-l1">
+			<br></br>
+			<table class="tbla table table-bordered table-hover">
+				<tr>
+					<td><p class="bld">Location:</p></td>
+					<td>"Belgrade, Republic of Serbia"</td>
+				</tr>
+				<tr>
+					<td><p class="bld">First name:</p></td>
+					<td><p th:text="${ptnFirstName}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">Last name:</p></td>
+					<td><p th:text="${ptnLastName}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">Date:</p></td>
+					<td><p th:text="${date}" /></td>
+				</tr>
+			</table>
+			<br></br>
+		</div>
+
+		<div class="rec-r1">
+			<br></br>
+			<table class="tbla table table-bordered table-hover">
+				<tr>
+					<td><p class="bld">Health Security Code:</p></td>
+					<td><p th:text="${ptnHsCode}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">Birth Date:</p></td>
+					<td><p th:text="${ptnBirthDate}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">Gender:</p></td>
+					<td><p th:text="${ptnGender}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">Record Type:</p></td>
+					<td><p th:text="${componentCode}" /></td>
+				</tr>
+			</table>
+			<br></br>
+		</div>
+
+		<div class="reportDetails">
+			<div class="form-group">
+				<label id="labRec">Record Details:</label>
+				<textarea id="textReport" rows="20" cols="300" class="form-control"
+					th:text="${recordDetails}" readonly="readonly"> 								
+							</textarea>
+			</div>
+		</div>
+
+		<div class="rec-l1">
+			<br></br>
+			<table class="tbla table table-bordered table-hover">
+				<tr>
+					<td><p class="bld">Qualifications:</p></td>
+					<td><p th:text="${docQualifications}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">License Code:</p></td>
+					<td><p th:text="${docLicenceCode}" /></td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="rec-r1">
+			<br></br>
+			<table class="tbla table table-bordered table-hover">
+				<tr>
+					<td><p class="bld">Doctor First Name:</p></td>
+					<td><p th:text="${docFirstName}" /></td>
+				</tr>
+				<tr>
+					<td><p class="bld">Doctor Last Name:</p></td>
+					<td><p th:text="${docLastName}" /></td>
+				</tr>
+			</table>
+		</div>
+
+	</div>
+</body>
+</html>
