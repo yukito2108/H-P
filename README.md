@@ -4,9 +4,9 @@ Demo app which covers a work in a doctor practice; Technology: Spring Boot, Post
 <img src="doc/medicalScover.png" width="400">
 <br/>
 
-### THE SPRING BOOT APPLICATION “DoctorPracticeDemo” - large integration
-<br/>
-The aim of the Spring Boot application “DoctorPracticeDemo” is to provide the way to schedule the doctor’s appointments and create, review and share medical reports. The project integrates many technologies into it. Some of them have already been introduced in my previous two projects [VideoKlubProjekat](https://github.com/petroneris/video-club-project) and [NewVideoClubProject](https://github.com/petroneris/new-video-club1). 
+### THE SPRING BOOT APPLICATION 'DoctorPracticeDemo' - large integration
+  
+The aim of the Spring Boot application 'DoctorPracticeDemo' is to provide the way to schedule the doctor’s appointments and create, review and share medical reports. The project integrates many technologies into it. Some of them have already been introduced in my previous two projects [VideoKlubProjekat](https://github.com/petroneris/video-club-project) and   [NewVideoClubProject](https://github.com/petroneris/new-video-club1). 
 
 “DoctorPracticeDemo” is the web application which demonstrates a usage of the following technologies:
 - Spring Boot - packaging and deployment
@@ -20,7 +20,7 @@ The aim of the Spring Boot application “DoctorPracticeDemo” is to provide th
 - Hibernate (ORM) - used together with Spring Data JPA
 - PostgreSQL – RDBMS data layer
 - Thymeleaf - Java template engine for processing and creating HTML, XML,JavaScript, CSS, and text, all in a servlet-
-  compatible way. A more advanced alternative to JSP
+  compatible way
 - Bootstrap + JQuery: front-end framework (css + js)
 - AJAX in front-end via jQuery standard library AJAX support
 - JSON data handling with Jackson library
