@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/headincl :: head" />
+<body>
+	<div th:fragment="footer">
+		<div class="footer1">
+			<p>
+				&copy; 2018 Med.Ctr.-Spring &emsp; User Role Type: <span
+					sec:authentication="principal.authorities"></span>
+			</p>
+		</div>
+	</div>
+</body>
+</html>

@@ -20,16 +20,23 @@ import com.snezana.doctorpractice.dto.MailDto;
 @Component
 public class MailComponent {
 
-	@Autowired
+	final
 	JavaMailSender javaMailSender;
 
-	@Autowired
+	final
 	TemplateEngine templateEngine;
+
+	@Autowired
+	public MailComponent(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
+		this.javaMailSender = javaMailSender;
+		this.templateEngine = templateEngine;
+	}
 
 	/**
 	 * Send email over http using the injected {@link JavaMailSender}.
+	 *
 	 * @param mailDto mail data transfer object - containing the email message as well as the
-	 * information about the receiver mail user/account.
+	 *                information about the receiver mail user/account.
 	 * @return {@code true} upon successful mail sending, {@code false} otherwise.
 	 */
 	public boolean sendHtmlMail(MailDto mailDto) {
@@ -39,7 +46,7 @@ public class MailComponent {
 		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 		MimeMessageHelper mailMessage = new MimeMessageHelper(mimeMessage);
 		try {
-			mailMessage.setTo("change_me_4"); // if you use Gmail do not forget to put your personal address
+			mailMessage.setTo("hoangvietnguyen2108@gmail.com"); // if you use Gmail do not forget to put your personal address
 			mailMessage.setFrom(mailDto.getUserEmail());
 			mailMessage.setSubject(mailDto.getSubjectEmail());
 			mailMessage.setText(messageHtml, true);

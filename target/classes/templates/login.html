@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>login Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body class="primb">
+	<div class="wrapper">
+		<div class="container">
+			<div class="logform">
+
+				<div>
+					<form class="form-horizontal" th:action="@{/login}" method="post">
+
+						<div class="form-group"
+							th:class="${param.error} ? 'form-group has-error' : 'form-group'">
+							<label class="col-md-2 control-label">Username:</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="username"
+									id="username" />
+							</div>
+						</div>
+
+						<div class="form-group"
+							th:class="${param.error} ? 'form-group has-error' : 'form-group'">
+							<label class="col-md-2 control-label">Password:</label>
+							<div class="col-md-9">
+								<input type="password" class="form-control" name="password"
+									id="password" />
+							</div>
+						</div>
+
+						<input type="hidden" th:name="${_csrf.parameterName}"
+							th:value="${_csrf.token}" />
+						<div class="indexLog">
+							<button type="submit" class="btn btn-primary btn-lg">Log
+								in</button>
+						</div>
+						<br></br>
+
+						<div th:if="${param.error}" class="prm alert alert-danger">
+							<p>Invalid username and password!</p>
+						</div>
+
+						<div th:if="${param.logout}" class="prm alert alert-success">
+							<p>You've been logged out.</p>
+						</div>
+
+						<div th:if="${param.timeout}" class="prm alert alert-warning">
+							<p>Session has timed out...</p>
+						</div>
+
+					</form>
+				</div>
+			</div>
+			<br></br>
+			<h3 class="title1">Med.Ctr.-Spring</h3>
+			<img th:src="@{/images/medicalS.gif}" width="200" />
+		</div>
+		<div class="centrlink">
+			<a th:href="@{/}">Back to Start Application</a>
+		</div>
+	</div>
+</body>
+</html>

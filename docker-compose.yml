@@ -1,0 +1,26 @@
+version: '3.7'
+volumes:
+  pgdata_local: {}
+services:
+  database:
+    image: postgres
+    command: postgres -c 'max_connections=500'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=newpassword
+      - POSTGRES_DB=doctor_practice
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 18200:5432
+    volumes:
+      - pgdata_local:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 80:80
+    depends_on:
+      - database
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@yopmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+

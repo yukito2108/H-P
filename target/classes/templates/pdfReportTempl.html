@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<style type="text/css">
+* {
+	font-family: 'Arial Unicode MS';
+	font-size: 14px;
+}
+
+.htmlreportheader {
+	text-align: center;
+	margin-top: 5px;
+}
+
+.headerpicture {
+	text-align: right;
+}
+
+.headerpicture img {
+	height: 70px;
+	padding-left: 35px;
+}
+
+.headerpicture p {
+	font-size: 12px;
+	padding-left: 35px;
+	padding-bottom: 35px;
+}
+
+.htmlreport {
+	width: 600px;
+	height: 900px;
+	border: 1px solid gray;
+	padding: 20px;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+p {
+	margin: 3px;
+}
+
+.bld {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.reportDetails {
+	clear: both;
+}
+
+label {
+	font-weight: bold;
+	text-align: center;
+	display: block;
+	padding-top: 20px;
+	padding-bottom: 5px;
+}
+
+textarea {
+	width: 550px;
+	height: 350px;
+	border: 1px solid gray;
+	text-align: left;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 10px;
+}
+
+.rec-l1 {
+	width: 47%;
+	margin-left: 15px;
+	float: left;
+}
+
+.rec-r1 {
+	width: 47%;
+	margin-left: 15px;
+	float: right;
+}
+
+@page {
+	margin-top: 2cm;
+	margin-left: 1.5cm;
+	margin-right: 1.5cm;
+	margin-bottom: 2cm;
+	size: A4 portrait;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<div class="htmlreport">
+				<div class="headerpicture">
+					<img src="classpath:static/images/medicalS.gif" />
+					<p>Med.Ctr.-Spring</p>
+				</div>
+				<th:block th:include="fragments/pdfReport::pdfReport"></th:block>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

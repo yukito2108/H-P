@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8" />
+<title>emailHTML</title>
+
+<style>
+.inlp {
+	display: inline;
+	padding-left: 5px;
+}
+
+.labEmail {
+	color: gray;
+}
+
+.divEmail {
+	margin-bottom: 5px;
+}
+</style>
+</head>
+<body th:object="${mailDto}">
+
+	<div class="divEmail">
+		<label class="labEmail">name:</label>
+		<p class="inlp" th:text="*{firstLastName}"></p>
+	</div>
+
+	<div class="divEmail">
+		<label class="labEmail">username:</label>
+		<p class="inlp" th:text="*{username}"></p>
+	</div>
+
+	<div class="divEmail">
+		<label class="labEmail">phone:</label>
+		<p class="inlp" th:text="*{telephone}"></p>
+	</div>
+
+	<div class="divEmail">
+		<label class="labEmail">e-mail:</label>
+		<h4 class="inlp" th:text="*{userEmail}"></h4>
+	</div>
+
+	<div class="divEmail">
+		<label class="labEmail">subject:</label>
+		<h4 class="inlp" th:text="*{subjectEmail}"></h4>
+	</div>
+
+	<p th:text="*{messageEmail}"></p>
+
+</body>
+</html>
+
+

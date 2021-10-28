@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>infoDoc Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(usersDoc, drop1)"></th:block>
+			<br></br>
+			<div class="ttl-l">
+				<h1 class="alert alert-info">Doctor User Info</h1>
+				<br></br>
+				<table class="tbla table table-bordered table-hover">
+					<tr>
+						<td><p>User Id:</p></td>
+						<td th:text="${user.userId}"></td>
+					</tr>
+					<tr>
+						<td><p>Username:</p></td>
+						<td th:text="${user.username}"></td>
+					</tr>
+					<tr>
+						<td><p>Email:</p></td>
+						<td th:text="${user.email}"></td>
+					</tr>
+					<tr>
+						<td><p>Address:</p></td>
+						<td th:text="${user.address}"></td>
+					</tr>
+					<tr>
+						<td><p>Telephone:</p></td>
+						<td th:text="${user.telephone}"></td>
+					</tr>
+					<tr>
+						<td><p>STATUS:</p></td>
+						<td th:text="${user.userStatus}"></td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="ttl-r">
+				<h1 class="alert alert-info">Doctor Personal Data</h1>
+				<br></br>
+				<table class="tbla table table-bordered table-hover">
+					<tr>
+						<td><p>Doctor Id:</p></td>
+						<td th:text="${user.Doctor.doctorId}"></td>
+					</tr>
+					<tr>
+						<td><p>First name:</p></td>
+						<td th:text="${user.Doctor.firstName}"></td>
+					</tr>
+					<tr>
+						<td><p>Last name:</p></td>
+						<td th:text="${user.Doctor.lastName}"></td>
+					</tr>
+					<tr>
+						<td><p>Qualifications:</p></td>
+						<td th:text="${user.Doctor.qualifications}"></td>
+					</tr>
+					<tr>
+						<td><p>Licence Code:</p></td>
+						<td th:text="${user.Doctor.licenceCode}"></td>
+					</tr>
+					<tr>
+						<td><p>Gender:</p></td>
+						<td th:text="${user.Doctor.gender}"></td>
+					</tr>
+					<tr>
+						<td><p>Birth date:</p></td>
+						<td th:text="${birthDate}"></td>
+					</tr>
+					<tr>
+						<td><p>Other:</p></td>
+						<td th:text="${user.Doctor.other}"></td>
+					</tr>
+				</table>
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

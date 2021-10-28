@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="fragments/headincl :: head" />
+<body>
+
+	<div th:fragment="anavbar(activeTab,activeDrop)">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+
+				<ul class="nav navbar-nav navbar-left">
+					<li><img th:src="@{/images/medicalS.gif}" height="50" /></li>
+				</ul>
+				<div class="navbar-header">
+					<p class="navbar-brand">Med.Ctr.-Spring</p>
+				</div>
+				<ul class="nav navbar-nav">
+					<li th:class="${activeTab == 'admin'}? 'active' : null"><a
+						th:href="@{/admin}">Admin</a></li>
+					<li class="dropdown"
+						th:classappend="${activeDrop == 'drop1'}? 'active' : null"><a
+						class="dropdown-toggle" data-toggle="dropdown" href="#">Users<span
+							class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li th:class="${activeTab == 'usersAdm'}? 'active' : null"><a
+								th:href="@{/admin/usersAdm}">Admin</a></li>
+							<li th:class="${activeTab == 'usersDoc'}? 'active' : null"><a
+								th:href="@{/admin/usersDoc}">Doctor</a></li>
+							<li th:class="${activeTab == 'usersPtn'}? 'active' : null"><a
+								th:href="@{/admin/usersPtn}">Patient</a></li>
+						</ul></li>
+					<li th:class="${activeTab == 'admPatRec'}? 'active' : null"><a
+						th:href="@{/admin/admPatRec}">Patient Records</a></li>
+					<li th:class="${activeTab == 'admAppnmt'}? 'active' : null"><a
+						th:href="@{/admin/admAppnmt}">Appointments</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown"
+						th:classappend="${activeDrop == 'drop2'}? 'active' : null"><a
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+							class="glyphicon glyphicon-user"></span><span></span> <span
+							sec:authentication="name">User</span><span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li th:class="${activeTab == 'admChat'}? 'active' : null"><a
+								th:href="@{/admin/admChat}">Chat</a></li>
+							<li th:class="${activeTab == 'changePassword'}? 'active' : null"><a
+								th:href="@{/admin/changePassword}">Change Password</a></li>
+							<li class="divider"></li>
+							<li><a th:href="@{/logout}">Logout</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div th:fragment="dnavbar(activeTab,activeDrop)">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<ul class="nav navbar-nav navbar-left">
+					<li><img th:src="@{/images/medicalS.gif}" height="50" /></li>
+				</ul>
+				<div class="navbar-header">
+					<p class="navbar-brand">Med.Ctr.-Spring</p>
+				</div>
+				<ul class="nav navbar-nav">
+					<li th:class="${activeTab == 'doctor'}? 'active' : null"><a
+						th:href="@{/doctor}">Doctor</a></li>
+					<li th:class="${activeTab == 'docPatRec'}? 'active' : null"><a
+						th:href="@{/doctor/docPatRec}">Patient Records</a></li>
+					<li class="dropdown"
+						th:classappend="${activeDrop == 'drop4'}? 'active' : null"><a
+						class="dropdown-toggle" data-toggle="dropdown" href="#">Appointments<span
+							class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li th:class="${activeTab == 'docSchdl'}? 'active' : null"><a
+								th:href="@{/doctor/docSchdl}">Scheduler</a></li>
+							<li th:class="${activeTab == 'docAppnmtLst'}? 'active' : null"><a
+								th:href="@{/doctor/docAppnmtLst}">Appntm List</a></li>
+						</ul></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown"
+						th:classappend="${activeDrop == 'drop3'}? 'active' : null"><a
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+							class="glyphicon glyphicon-user" style="color: LightPink"></span><span></span>
+							<span sec:authentication="name" style="color: LightPink">User</span><span
+							class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li th:class="${activeTab == 'docChat'}? 'active' : null"><a
+								th:href="@{/doctor/docChat}">Chat</a></li>
+							<li
+								th:class="${activeTab == 'docChangePassword'}? 'active' : null"><a
+								th:href="@{/doctor/docChangePassword}">Change Password</a></li>
+							<li th:class="${activeTab == 'docMail'}? 'active' : null"><a
+								th:href="@{/doctor/docMail}">Send e-mail to admin</a></li>
+							<li class="divider"></li>
+							<li><a th:href="@{/logout}">Logout</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div th:fragment="pnavbar(activeTab,activeDrop)">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<ul class="nav navbar-nav navbar-left">
+					<li><img th:src="@{/images/medicalS.gif}" height="50" /></li>
+				</ul>
+				<div class="navbar-header">
+					<p class="navbar-brand">Med.Ctr.-Spring</p>
+				</div>
+				<ul class="nav navbar-nav">
+					<li th:class="${activeTab == 'home'}? 'active' : null"><a
+						th:href="@{/home}">Home</a></li>
+					<li th:class="${activeTab == 'patViewRecords'}? 'active' : null"><a
+						th:href="@{/home/patViewRecords}">Patient Records</a></li>
+					<li th:class="${activeTab == 'patAppnmt'}? 'active' : null"><a
+						th:href="@{/home/patAppnmt}">Appointments</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown"
+						th:classappend="${activeDrop == 'drop4'}? 'active' : null"><a
+						class="dropdown-toggle" data-toggle="dropdown" href="#"><span
+							class="glyphicon glyphicon-user" style="color: MediumSpringGreen"></span><span></span>
+							<span sec:authentication="name" style="color: MediumSpringGreen">User</span><span
+							class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li th:class="${activeTab == 'patChat'}? 'active' : null"><a
+								th:href="@{/home/patChat}">Chat</a></li>
+							<li
+								th:class="${activeTab == 'patChangePassword'}? 'active' : null"><a
+								th:href="@{/home/patChangePassword}">Change Password</a></li>
+							<li th:class="${activeTab == 'patMail'}? 'active' : null"><a
+								th:href="@{/home/patMail}">Send e-mail to admin</a></li>
+							<li class="divider"></li>
+							<li><a th:href="@{/logout}">Logout</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div th:fragment="accDenavbar">
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+			<div class="container">
+				<ul class="nav navbar-nav navbar-left">
+					<li><img th:src="@{/images/medicalS.gif}" height="50" /></li>
+				</ul>
+				<div class="navbar-header">
+					<p class="navbar-brand">Med.Ctr.-Spring</p>
+				</div>				
+			</div>
+		</nav>
+	</div>
+
+</body>
+</html>

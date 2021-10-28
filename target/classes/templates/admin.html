@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(admin, none)"></th:block>
+			<br></br>
+			<div class="ttl">
+				<h1 class="alert alert-info">ADMIN PAGE Info</h1>
+				<br></br>
+				<table class="tbla table table-bordered table-hover">
+					<tr>
+						<td><p>User Id:</p></td>
+						<td th:text="${admin.userId}"></td>
+					</tr>
+					<tr>
+						<td><p>Username:</p></td>
+						<td th:text="${admin.username}"></td>
+					</tr>
+					<tr>
+						<td><p>Email:</p></td>
+						<td th:text="${admin.email}"></td>
+					</tr>
+					<tr>
+						<td><p>Address:</p></td>
+						<td th:text="${admin.address}"></td>
+					</tr>
+					<tr>
+						<td><p>Telephone:</p></td>
+						<td th:text="${admin.telephone}"></td>
+					</tr>
+					<tr>
+						<td><p>STATUS:</p></td>
+						<td th:text="${admin.userStatus}"></td>
+					</tr>
+				</table>
+
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

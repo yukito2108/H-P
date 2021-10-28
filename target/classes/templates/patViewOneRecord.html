@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>patVRec1 Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block
+				th:include="fragments/header :: pnavbar(patViewRecords, none)"></th:block>
+
+			<div class="htmlreport">
+				<div class="headerpicture">
+					<img th:src="@{/images/medicalS.gif}" />
+					<p>Med.Ctr.-Spring</p>
+				</div>
+				<div class="pRep">
+					<th:block th:include="fragments/pdfReport::pdfReport"></th:block>
+					<h1></h1>
+					<button type="button" class="btn btn-link">medical-report</button>
+					<h1></h1>
+				</div>
+			</div>
+
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>

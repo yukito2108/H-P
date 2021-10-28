@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>WELCOME!</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body class="primb">
+	<div class="wrapper">
+		<div class="container1">
+			<div class="backgrd">
+				<br></br>
+				<h1 class="title1">WELCOME!</h1>
+				<h1 class="title1">MEDICAL CENTER SPRING</h1>
+				<br></br>
+				<div class="indexLog">
+					<a th:href="@{/login}">Login</a>
+				</div>
+			</div>
+			<img th:src="@{/images/medicalS.gif}" width="400" />
+		</div>
+	</div>
+</body>
+</html>

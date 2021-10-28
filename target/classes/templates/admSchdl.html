@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>admSchdl Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+<script th:src="@{/webjars/sockjs-client/1.0.2/sockjs.js}"></script>
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	var counter = 1;
+
+	function dataLoad() {
+		$('.content').hide();
+		$('#content-' + counter + '').show();
+		$('.back').hide();
+		dataView();
+		connect();
+	}
+	
+
+	$(document).on('click', '.next', function() {
+		$('.content').hide();
+		counter++;
+		$('#content-' + counter + '').show();
+		if (counter > 1) {
+			$('.back').show();
+		}
+		if (counter == 4) {
+			$('.next').hide();
+		}
+		});
+
+
+	$(document).on('click', '.back', function() {
+		counter--;
+		$('.content').hide();
+		$('.next').show();
+		var id = counter;		
+		$('#content-' + id).show();
+		if (counter < 2) {
+			$('.back').hide();
+		}
+		});
+
+
+
+function dataView() {
+	var i;
+	var appList = [[${appViewList}]];
+//	alert("dataView here!");
+	for(i=0; i < appList.length; i++){
+		var tdId = btoa(appList[i].appDatetime);
+		console.log('tdId= ' +tdId);
+		var cell = document.getElementById(tdId);				
+		if(appList[i].appStatusCode ==="FREE"){	
+			$(cell).addClass("selected-blue");
+		}else{
+			$(cell).removeClass("selected-blue");
+		}
+		if(appList[i].appStatusCode ==="RSVD"){	
+			$(cell).addClass("selected-green");			
+		}else{
+			$(cell).removeClass("selected-green");
+		}
+	}
+}
+
+////* WebSocket event functions for scheduler *////
+
+function connect() {
+			ws = new SockJS('/DoctorPracticeDemo/wsevents');
+			console.log("Connected " + ws);
+			ws.onmessage = function(evt) {
+				doEvtAction(evt);
+			}
+		}
+
+		function disconnect() {
+			if (ws != null) {
+				ws.close();
+			}
+			console.log("Disconnected");
+		}
+
+		function doEvtAction(evt) {
+			var jsonObj = JSON.parse(evt.data);
+			var appDatetime = jsonObj.appDatetime;
+			var doctorId = jsonObj.doctorId;
+			var patientId = jsonObj.patientId;			
+			var action = jsonObj.action;			
+			var tdId = btoa(appDatetime);
+			console.log('tdId= ' +tdId);
+			var cell = document.getElementById(tdId);			
+			var dctrId = [[${dctrId}]];
+			if(dctrId === doctorId){
+			if (jsonObj.action === "FREEWS") {
+				$(cell).addClass("selected-blue");											
+			}
+			else if (jsonObj.action === "CNLDWS") {
+				$(cell).removeClass("selected-blue");				
+			} 
+			else if (jsonObj.action === "RSVDWS") {
+				$(cell).addClass("selected-green");
+				$(cell).removeClass("selected-blue");				
+			}
+			else if (jsonObj.action === "PCLDWS") {
+				$(cell).addClass("selected-blue");
+				$(cell).removeClass("selected-green");								
+			}			
+			else {
+//				alert("Option \"" + jsonObj.action + "\" not available!");
+			}
+			}
+		}
+
+	/*]]>*/
+</script>
+</head>
+<body onload="dataLoad();">
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(admAppnmt, none)"></th:block>
+			<h1></h1>
+			<br></br>
+			<h2 class="alert alert-info" th:inline="text">
+				APPOINTMENTS for doctor: <span th:text="${doctorName}"></span>
+			</h2>
+			<h1></h1>
+			<input type="hidden" th:name="${_csrf.parameterName}"
+				th:value="${_csrf.token}" />
+			<div class="proba">
+				<div class="content-holder">
+
+					<div class="content" id="content-1" style="display: block;">
+						<br></br>
+						<h3>First Week</h3>
+						<br></br>
+						<table id="snezatbl1" class="tbbll table table-bordered">
+							<tr id="rh-1">
+								<th id="th-1"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(1)}"></th>
+								<th id="th-2"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(2)}"></th>
+								<th id="th-3"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(3)}"></th>
+								<th id="th-4"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(4)}"></th>
+								<th id="th-5"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(5)}"></th>
+								<th id="th-6"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(6)}"></th>
+								<th id="th-7"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(7)}"></th>
+							</tr>
+
+							<tr id="r1-8">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'08:00')}"
+									th:text="${hour8}"></td>
+							</tr>
+
+							<tr id="r1-9">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'09:00')}"
+									th:text="${hour9}"></td>
+							</tr>
+
+							<tr id="r1-10">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'10:00')}"
+									th:text="${hour10}"></td>
+							</tr>
+
+							<tr id="r1-11">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'11:00')}"
+									th:text="${hour11}"></td>
+							</tr>
+
+							<tr id="r1-12">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'12:00')}"
+									th:text="${hour12}"></td>
+							</tr>
+
+							<tr id="r1-13">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'13:00')}"
+									th:text="${hour13}"></td>
+							</tr>
+
+							<tr id="r1-14">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'14:00')}"
+									th:text="${hour14}"></td>
+							</tr>
+
+							<tr id="r1-15">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(1,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(2,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(3,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(4,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(5,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(6,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(7,'15:00')}"
+									th:text="${hour15}"></td>
+							</tr>
+
+						</table>
+					</div>
+					<div class="content" id="content-2">
+						<br></br>
+						<h3>Second Week</h3>
+						<br></br>
+						<table id="tbl2" class="tbbll table table-bordered">
+							<tr id="rh-2">
+								<th id="th-8"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(8)}"></th>
+								<th id="th-9"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(9)}"></th>
+								<th id="th-10"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(10)}"></th>
+								<th id="th-11"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(11)}"></th>
+								<th id="th-12"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(12)}"></th>
+								<th id="th-13"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(13)}"></th>
+								<th id="th-14"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(14)}"></th>
+							</tr>
+
+							<tr id="r2-8">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'08:00')}"
+									th:text="${hour8}"></td>
+							</tr>
+
+							<tr id="r2-9">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'09:00')}"
+									th:text="${hour9}"></td>
+							</tr>
+
+							<tr id="r2-10">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'10:00')}"
+									th:text="${hour10}"></td>
+							</tr>
+
+							<tr id="r2-11">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'11:00')}"
+									th:text="${hour11}"></td>
+							</tr>
+
+							<tr id="r2-12">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'12:00')}"
+									th:text="${hour12}"></td>
+							</tr>
+
+							<tr id="r2-13">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'13:00')}"
+									th:text="${hour13}"></td>
+							</tr>
+
+							<tr id="r2-14">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'14:00')}"
+									th:text="${hour14}"></td>
+							</tr>
+
+							<tr id="r2-15">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(8,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(9,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(10,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(11,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(12,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(13,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(14,'15:00')}"
+									th:text="${hour15}"></td>
+							</tr>
+
+						</table>
+					</div>
+					<div class="content" id="content-3">
+						<br></br>
+						<h3>Third Week</h3>
+						<br></br>
+						<table id="tbl3" class="tbbll table table-bordered">
+							<tr>
+								<th id="th-15"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(15)}"></th>
+								<th id="th-16"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(16)}"></th>
+								<th id="th-17"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(17)}"></th>
+								<th id="th-18"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(18)}"></th>
+								<th id="th-19"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(19)}"></th>
+								<th id="th-20"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(20)}"></th>
+								<th id="th-21"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(21)}"></th>
+							</tr>
+
+							<tr id="r3-8">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'08:00')}"
+									th:text="${hour8}"></td>
+							</tr>
+
+							<tr id="r3-9">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'09:00')}"
+									th:text="${hour9}"></td>
+							</tr>
+
+							<tr id="r3-10">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'10:00')}"
+									th:text="${hour10}"></td>
+							</tr>
+
+							<tr id="r3-11">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'11:00')}"
+									th:text="${hour11}"></td>
+							</tr>
+
+							<tr id="r3-12">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'12:00')}"
+									th:text="${hour12}"></td>
+							</tr>
+
+							<tr id="r3-13">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'13:00')}"
+									th:text="${hour13}"></td>
+							</tr>
+
+							<tr id="r3-14">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'14:00')}"
+									th:text="${hour14}"></td>
+							</tr>
+
+							<tr id="r3-15">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(15,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(16,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(17,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(18,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(19,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(20,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(21,'15:00')}"
+									th:text="${hour15}"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="content" id="content-4">
+						<br></br>
+						<h3>Fourth Week</h3>
+						<br></br>
+						<table id="tbl3" class="tbbll table table-bordered">
+							<tr>
+								<th id="th-22"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(22)}"></th>
+								<th id="th-23"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(23)}"></th>
+								<th id="th-24"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(24)}"></th>
+								<th id="th-25"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(25)}"></th>
+								<th id="th-26"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(26)}"></th>
+								<th id="th-27"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(27)}"></th>
+								<th id="th-28"
+									th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).specificDay(28)}"></th>
+							</tr>
+
+							<tr id="r4-8">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'08:00')}"
+									th:text="${hour8}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'08:00')}"
+									th:text="${hour8}"></td>
+							</tr>
+
+							<tr id="r4-9">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'09:00')}"
+									th:text="${hour9}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'09:00')}"
+									th:text="${hour9}"></td>
+							</tr>
+
+							<tr id="r4-10">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'10:00')}"
+									th:text="${hour10}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'10:00')}"
+									th:text="${hour10}"></td>
+							</tr>
+
+							<tr id="r4-11">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'11:00')}"
+									th:text="${hour11}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'11:00')}"
+									th:text="${hour11}"></td>
+							</tr>
+
+							<tr id="r4-12">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'12:00')}"
+									th:text="${hour12}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'12:00')}"
+									th:text="${hour12}"></td>
+							</tr>
+
+							<tr id="r4-13">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'13:00')}"
+									th:text="${hour13}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'13:00')}"
+									th:text="${hour13}"></td>
+							</tr>
+
+							<tr id="r4-14">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'14:00')}"
+									th:text="${hour14}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'14:00')}"
+									th:text="${hour14}"></td>
+							</tr>
+
+							<tr id="r4-15">
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(22,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(23,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(24,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(25,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(26,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(27,'15:00')}"
+									th:text="${hour15}"></td>
+								<td
+									th:id="${T(com.snezana.doctorpractice.utils.SomeUtils).getApptmDay(28,'15:00')}"
+									th:text="${hour15}"></td>
+							</tr>
+						</table>
+					</div>
+					<div class="ttl-l">
+						<br></br>
+						<button type="button" class="back">&laquo; Back</button>
+					</div>
+					<div class="ttl-r">
+						<br></br>
+						<button type="button" class="next">Next &raquo;</button>
+					</div>
+				</div>
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -126,3 +126,18 @@ CREATE TABLE IF NOT EXISTS user_role (
     ON UPDATE NO ACTION
 );
 
+INSERT INTO "public"."role" (role_id,role_type) VALUES (1,'ADMIN'), (2,'DOCTOR'), (3,'USER');
+
+INSERT INTO "public"."record_type" (component_code,component_description) VALUES('PHEX','physical examination'),('MDPR','medical prescription'),('RTSP','referral to specialists');
+
+INSERT INTO "public"."appointment_status_code" (app_status_code,app_status_description) VALUES('CNLD','cancelled term by doctor'),('RSVD','reserved term by patient'),('FREE','free term opened by doctor'),('OTHR','other actions');
+
+INSERT INTO "public"."user_data" (user_id,username,password,email,address,telephone,user_status) VALUES (1,'sneza','$2a$10$FOulUm753QCqNmKfWX006uopOhTeE9hdmOtrZrKpJD6tu7oy6pYg6','sneza@snnp.com','Nušićeva 93,Beograd','7865435','ACTIVE');
+
+INSERT INTO "public"."user_data" (user_id,username,password,email,address,telephone,user_status) VALUES (9,'unknown','$2a$10$FOulUm753QCqNmKfWX006uopOhTeE9hdmOtrZrKpJD6tu7oy6pYg6','unknown@unk.un','No address','100000','INACTIVE');
+
+INSERT INTO "public"."patient" (patient_id,hs_code,gender,birth_date,first_name,last_name,other,user_id) VALUES (3,'00000000000','M','2018-01-01','Unknown','Unknown','This is a patient generated for Appointment Records creation only.',9);
+
+INSERT INTO "public"."user_role" (user_id,role_id) VALUES (1,1);
+
+INSERT INTO "public"."user_role" (user_id,role_id) VALUES (9,3);

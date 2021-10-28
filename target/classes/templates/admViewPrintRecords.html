@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>adm VPrintReports Page</title>
+<th:block th:include="fragments/headincl :: head"></th:block>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="container">
+			<th:block th:include="fragments/header :: anavbar(admPatRec, none)"></th:block>
+			<h1></h1>
+			<br></br>
+			<div th:if="${not #lists.isEmpty(patientRecordsList)}">
+				<h2 class="alert alert-info" th:inline="text">
+					Records List for: <span th:text="${patientName}"></span>
+				</h2>
+				<h1></h1>
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>date</th>
+						<th>record type</th>
+						<th>dr first name</th>
+						<th>dr last name</th>
+						<th></th>
+					</tr>
+					<tr th:each="record : ${patientRecordsList}">						
+						<td th:with ="date=${record.date}" th:text="${T(com.snezana.doctorpractice.utils.SomeUtils).stringToStringD(date)}"></td>					
+						<td th:text="${record.recordType.componentCode}"></td>
+						<td th:text="${record.Doctor.firstName}"></td>
+						<td th:text="${record.Doctor.lastName}"></td>
+						<td><a
+							th:href="@{/admin/admViewPrintOneRecord(id=${record.patientRecordId})}"
+							class="btn btn-success active btn-md" role="button">View/Print
+								Record</a></td>
+					</tr>
+				</table>
+			</div>
+			<th:block th:include="fragments/footer :: footer"></th:block>
+		</div>
+	</div>
+</body>
+</html>
